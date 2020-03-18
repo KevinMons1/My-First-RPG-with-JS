@@ -11,6 +11,14 @@ let ctx = canvas.getContext('2d')
 canvas.width = 700;
 canvas.height = 200;
 
+// let cloud = new Image();
+// cloud.src = 'cloud.png';
+
+// function cloudAnim(){
+//     ctx.drawImage(cloud, 100,150, 50, 50)
+// }
+// cloudAnim()
+
 // Variables Globaux ---------------------------------------------------
 
 let scale = 1; // multiplicateur de taille
@@ -25,15 +33,18 @@ let yh = 150;
 let vx = 2;
 let posture = true;
 let sence = 0; // 0 = droitre 1 = gauche
+let compteurForHurtHero = 0;
+let vieHero = 0;
+let arrayVieHero = ['❤️❤️❤️❤️❤️', '❤️❤️❤️❤️', '❤️❤️❤️', '❤️❤️', '❤️']
 
 // function prédéfinie d'animation ------------------------------------
 
 function drawFrame(img, frameX, frameY, canvasX, canvasY){
 
     ctx.drawImage(img, frameX * width, frameY * height, width, height,
-                  canvasX, canvasY, scaleWidth, scaleHeight)
+                  canvasX, canvasY, scaleWidth, scaleHeight);
 
-}
+};
 
 // Posture de base ------------------------------------------------------
 
@@ -114,12 +125,15 @@ function heroAnimAttack(){
     ctx.clearRect(xh,yh,48, 48);
 
     if(sence == 0){
+
         drawFrame(heroAttack,arrayHeroAttack[i],0,xh,yh);
         i++;
         if(i >= arrayHeroAttack.length){
             i = 0;
         }
+
     } else if(sence == 1){
+
         drawFrame(heroAttackReverse,arrayHeroAttackReverse[i],0,xh,yh);
         i++;
         if(i >= arrayHeroAttackReverse.length){
@@ -127,6 +141,47 @@ function heroAnimAttack(){
         }
     }
 }
+
+// Animation blesser -----------------------------------------------------
+
+let heroHurt = new Image();
+heroHurt.src = 'hero/GraveRobber_hurt.png';
+
+let heroHurtReverse = new Image();
+heroHurtReverse.src = 'hero/GraveRobberReverse_hurt.png';
+
+function heroAnimHurt(){
+
+    if(sence == 0){
+
+        if(!(compteurForHurtHero <= 60)){
+            fps++;
+            if(fps < 2){
+                return;
+            }
+            fps = 0;
+            ctx.clearRect(xh,yh,48, 48);
+            drawFrame(heroHurt,1,0,xh,yh);
+            vieHero++;
+            perteVie()
+            compteurForHurtHero = 0;
+        };
+    } else if(sence == 1){
+
+        if(!(compteurForHurtHero <= 60)){
+            fps++;
+            if(fps < 2){
+                return;
+            }
+            fps = 0;
+            ctx.clearRect(xh,yh,48, 48);
+            drawFrame(heroHurtReverse,1,0,xh,yh);
+            vieHero++;
+            perteVie()
+            compteurForHurtHero = 0;
+        };
+    };
+};
 
 // Declanchement animation ------------------------------------------------
 
@@ -139,27 +194,31 @@ function toucheHeroAnimWalk(e){
 
     // avance a droite
     if(e.keyCode === FLECHE_DROITE){
-        xh += vx
+        xh += vx;
         posture = false;
-        requestAnimationFrame(heroAnimWalk)
+        requestAnimationFrame(heroAnimWalk);
         sence = 0;
-        bloqueMur()
-    }
+        bloqueMur();
+    };
 
     // avance a gauche
     if(e.keyCode === FLECHE_GAUCHE){
-        xh -= vx
+        xh -= vx;
         posture = false;
-        requestAnimationFrame(heroAnimWalkReverse)
+        requestAnimationFrame(heroAnimWalkReverse);
         sence = 1;
-        bloqueMur()
+        bloqueMur();
     }
 
     // attack
     if(e.keyCode === ESPACE){
         posture = false;
-        requestAnimationFrame(heroAnimAttack)
-    }
+        requestAnimationFrame(heroAnimAttack);
+    };
+};
+
+function perteVie(){
+    document.getElementById('vie').innerHTML = arrayVieHero[vieHero]
 }
 
 // Bloquage des murs --------------------------------------------------
@@ -168,11 +227,11 @@ function bloqueMur(){
 
     // gauche
     if(xh <= -20){
-        xh = -19
+        xh = -19;
     }
     //droite
     if(xh >= 675){
-        xh = 674
-    }
+        xh = 674;
+    };
 
-}
+};

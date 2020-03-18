@@ -1,10 +1,24 @@
+let canvas2 = document.getElementById('canvas2');
+let ctx2 = canvas2.getContext('2d')
+
+canvas2.width = 700;
+canvas2.height = 200;
+
 // Variable -----------------------------------------------------------
 
 let j = 0;
-let xe = 500;
+let xe = 250;
 let senceE = 0 // 0 = droite 1 = gauche
 let fpsE = 0;
 
+// function prédéfinie d'animation ------------------------------------
+
+function drawFrameE(img, frameX, frameY, canvasX, canvasY){
+
+    ctx2.drawImage(img, frameX * width, frameY * height, width, height,
+                  canvasX, canvasY, scaleWidth, scaleHeight);
+
+};
 
 // Calcule de senceE -------------------------------------------------
 
@@ -50,13 +64,13 @@ let oldManReverse = new Image();
 oldManReverse.src = 'ennemis/Old_manReverse.png'
 
 function postureBaseOldMan(){
-        ctx.clearRect(xe,yh,48,48)
-        drawFrame(oldMan,0,0,xe,yh)
+        ctx2.clearRect(xe,yh,48,48)
+        drawFrameE(oldMan,0,0,xe,yh)
 }
 
 function postureBaseOldManReverse(){
-    ctx.clearRect(xe,yh,48,48)
-    drawFrame(oldManReverse,0,0,xe,yh)
+    ctx2.clearRect(xe,yh,48,48)
+    drawFrameE(oldManReverse,0,0,xe,yh)
 }
 
 // Animation Walk Old Man ------------------------------------------
@@ -73,8 +87,8 @@ function oldManAnimWalk(){
             return;
         }
         fpsE = 0;
-        ctx.clearRect(xe,yh,48, 48);
-        drawFrame(oldManWalk,arrayOldManWalk[j],0,xe ,yh);
+        ctx2.clearRect(xe,yh,48, 48);
+        drawFrameE(oldManWalk,arrayOldManWalk[j],0,xe,yh);
         j++;
         xe += 3;
         if(j >= arrayOldManWalk.length){
@@ -94,8 +108,8 @@ function oldManAnimWalkReverse(){
             return;
         }
         fpsE = 0;
-        ctx.clearRect(xe,yh,48, 48);
-        drawFrame(oldManWalkReverse,arrayOldManWalkReverse[j],0,xe ,yh);
+        ctx2.clearRect(xe,yh,48, 48);
+        drawFrameE(oldManWalkReverse,arrayOldManWalkReverse[j],0,xe,yh);
         j++;
         xe -= 3;
         if(j >= arrayOldManWalkReverse.length){
@@ -112,12 +126,32 @@ let arrayOldManAttack = [0, 1, 2, 3]; // tableau séparent les sprite
 
 // gauche
 let oldManAttackReverse = new Image();
-oldManAttackReverse.src = 'ennemis/Old_man_attack.png';
-let arrayoldManAttackReverse = [3, 2, 1, 0];
+oldManAttackReverse.src = 'ennemis/Old_man_attackReverse.png';
+let arrayOldManAttackReverse = [3, 2, 1, 0];
 
 function oldManAnimAttack(){
+    compteurForHurtHero++;
+    fpsE++;
+    if(fpsE < 2){
+        return;
+    }
+    fpsE = 0;
+    ctx2.clearRect(xe,yh,48,48);
 
-}
+    if(senceE == 0){
+        drawFrameE(oldManAttack,arrayOldManAttack[j],0,xe,yh);
+        j++;
+        if(j >= arrayOldManAttack.length){
+            j = 0;
+        };
+    } else if(senceE == 1){
+        drawFrameE(oldManAttackReverse,arrayOldManAttackReverse[j],0,xe,yh);
+        j++;
+        if(j >= arrayOldManAttackReverse.length){
+            j = 0;
+        };
+    };
+};
 
 // But de Old Man -----------------------------------------------------
 
@@ -127,34 +161,36 @@ function butWalkOldMan(){
 
             setTimeout(function(){
 
-                if(xe >= xh - 50){
+                if(xe >= xh - 20){
 
                     butWalkOldMan();
-                    postureBaseOldMan();
-        
+                    requestAnimationFrame(oldManAnimAttack)
+                    requestAnimationFrame(heroAnimHurt)
+
                 } else{
         
                     requestAnimationFrame(oldManAnimWalk);
                     butWalkOldMan();
 
-            }
-        },35)
+            };
+        },35);
 
     } else if(senceE == 1){ // avance vers la gauche
 
         setTimeout(function(){
 
-            if(xe <= xh + 50){
+            if(xe <= xh + 20){
 
                 butWalkOldMan();
-                postureBaseOldManReverse();
+                requestAnimationFrame(oldManAnimAttack)
+                requestAnimationFrame(heroAnimHurt)
     
             } else{
     
                 requestAnimationFrame(oldManAnimWalkReverse);
                 butWalkOldMan();
-         }
-      },35)
-    }
-    
-}
+
+         };
+      },35);
+    };
+};

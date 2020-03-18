@@ -7,6 +7,8 @@ html, body {
     width: 100%;
     height: 100%;
     background-color: rgb(73, 69, 69);
+    font-size: 15px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 canvas {
@@ -14,10 +16,31 @@ canvas {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    border: 2px solid white;
+}
+
+#canvas {
     background-image: url(background/backgrounds-full.png);
     background-position: bottom;
     background-repeat: no-repeat;
     background-size: 100%;
-    border: 2px solid white;
-    clip-path: ;
+}
+
+#canvas2 {
+    z-index: 2;
+}
+
+#box {
+    width: 700px;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    display: flex;
+    justify-content: space-between;
+}
+
+.boite {
+    padding: 0 20px;
 }
