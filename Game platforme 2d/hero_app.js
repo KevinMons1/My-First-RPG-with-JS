@@ -31,11 +31,13 @@ let fps = 0;
 let xh = canvas.width / 2;
 let yh = 150;
 let vx = 2;
+let xe = -30;
 let posture = true;
 let sence = 0; // 0 = droitre 1 = gauche
 let compteurForHurtHero = 0;
 let vieHero = 0;
 let arrayVieHero = ['❤️❤️❤️❤️❤️', '❤️❤️❤️❤️', '❤️❤️❤️', '❤️❤️', '❤️']
+let vieOldMan = 10;
 
 // function prédéfinie d'animation ------------------------------------
 
@@ -132,14 +134,25 @@ function heroAnimAttack(){
             i = 0;
         }
 
+        // vie de l'enemie
+        if(xh + 20 >= xe){
+            vieOldMan--
+        }
+
     } else if(sence == 1){
 
         drawFrame(heroAttackReverse,arrayHeroAttackReverse[i],0,xh,yh);
         i++;
         if(i >= arrayHeroAttackReverse.length){
             i = 0;
+        } 
+
+        // vie de l'enemie
+        if(xh - 20 <= xe){
+            vieOldMan--
         }
     }
+    console.log(vieOldMan)
 }
 
 // Animation blesser -----------------------------------------------------
