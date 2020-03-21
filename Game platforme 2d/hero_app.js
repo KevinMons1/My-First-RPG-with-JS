@@ -11,13 +11,12 @@ let ctx = canvas.getContext('2d')
 canvas.width = 700;
 canvas.height = 200;
 
-// let cloud = new Image();
-// cloud.src = 'cloud.png';
+let canvas2 = document.getElementById('canvas2');
+let ctx2 = canvas2.getContext('2d');
 
-// function cloudAnim(){
-//     ctx.drawImage(cloud, 100,150, 50, 50)
-// }
-// cloudAnim()
+canvas2.width = 700;
+canvas2.height = 200;
+
 
 // Variables Globaux ---------------------------------------------------
 
@@ -32,12 +31,18 @@ let xh = canvas.width / 2;
 let yh = 150;
 let vx = 2;
 let xe = -30;
+let xb = 640;
+let yb = 100;
 let posture = true;
 let sence = 0; // 0 = droitre 1 = gauche
+let senceE = 0; // 0 = droite 1 = gauche
 let compteurForHurtHero = 0;
 let vieHero = 0;
 let arrayVieHero = ['❤️❤️❤️❤️❤️', '❤️❤️❤️❤️', '❤️❤️❤️', '❤️❤️', '❤️']
 let vieOldMan = 10;
+let vieOldWoman = 100
+//let score = 0;
+let survie = 25;
 
 // function prédéfinie d'animation ------------------------------------
 
@@ -135,7 +140,7 @@ function heroAnimAttack(){
         }
 
         // vie de l'enemie
-        if(xh + 20 >= xe){
+        if(xh + 20 >= xe && senceE == 1){
             vieOldMan--
         }
 
@@ -148,7 +153,7 @@ function heroAnimAttack(){
         } 
 
         // vie de l'enemie
-        if(xh - 20 <= xe){
+        if(xh - 20 <= xe && senceE == 0){
             vieOldMan--
         }
     }
@@ -248,3 +253,22 @@ function bloqueMur(){
     };
 
 };
+
+function tempsSurvie(){
+
+
+    setTimeout(function(){
+        survie++;
+        document.getElementById('tempsSurvieHTML').innerHTML =
+        `Survie : ${survie} secondes`;
+        tempsSurvie();
+    },1000)
+
+    if(survie == 30 || survie == 60 || survie == 90 || survie == 120|| survie == 150){
+        apparitionOldWoman();
+        ctx2.clearRect(xe,yh,48,48)
+        xe = -500;
+    };
+
+}
+tempsSurvie();

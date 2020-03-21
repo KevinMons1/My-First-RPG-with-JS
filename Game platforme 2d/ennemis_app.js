@@ -1,14 +1,8 @@
-let canvas2 = document.getElementById('canvas2');
-let ctx2 = canvas2.getContext('2d')
-
-canvas2.width = 700;
-canvas2.height = 200;
-
 // Variable -----------------------------------------------------------
 
 let j = 0;
-let senceE = 0 // 0 = droite 1 = gauche
 let fpsE = 0;
+let veAnim = 3;
 
 // function prédéfinie d'animation ------------------------------------
 
@@ -22,8 +16,9 @@ function drawFrameE(img, frameX, frameY, canvasX, canvasY){
 // Calcule de senceE -------------------------------------------------
 
 
-// pour savoir si les ennemis
-// doivent marcher vers a droite ou gauche
+/* pour savoir si les ennemis
+   doivent marcher vers a droite ou gauche
+*/
 
 function calculeDuSenceE(){
 
@@ -56,7 +51,7 @@ oldMan.onload = function(){
 
     } else if(senceE == 1){
         postureBaseOldManReverse();
-        butWalkOldManReverse();
+        butWalkOldMan();
     }
 }
 
@@ -64,8 +59,8 @@ let oldManReverse = new Image();
 oldManReverse.src = 'ennemis/Old_manReverse.png'
 
 function postureBaseOldMan(){
-        ctx2.clearRect(xe,yh,48,48)
-        drawFrameE(oldMan,0,0,xe,yh)
+    ctx2.clearRect(xe,yh,48,48)
+    drawFrameE(oldMan,0,0,xe,yh)
 }
 
 function postureBaseOldManReverse(){
@@ -90,7 +85,7 @@ function oldManAnimWalk(){
         ctx2.clearRect(xe,yh,48, 48);
         drawFrameE(oldManWalk,arrayOldManWalk[j],0,xe,yh);
         j++;
-        xe += 3;
+        xe += veAnim;
         if(j >= arrayOldManWalk.length){
             j = 0;
         }
@@ -111,7 +106,7 @@ function oldManAnimWalkReverse(){
         ctx2.clearRect(xe,yh,48, 48);
         drawFrameE(oldManWalkReverse,arrayOldManWalkReverse[j],0,xe,yh);
         j++;
-        xe -= 3;
+        xe -= veAnim;
         if(j >= arrayOldManWalkReverse.length){
             j = 0;
         }
@@ -171,7 +166,7 @@ function oldManAnimMort(){
     drawFrameE(oldManMort,arrayOldManMort[j],0,xe,yh);
     j++;
     if(j >= arrayOldManMort.length){
-        return
+        ctx2.clearRect(48,48,xe,yh)
     };
 };
 
@@ -191,7 +186,7 @@ function oldManAnimMortReverse(){
     drawFrameE(oldManMortReverse,arrayOldManMortReverse[j],0,xe,yh);
     j++;
     if(j >= arrayOldManMortReverse.length){
-        return
+        ctx2.clearRect(48,48,xe,yh)
     };
 };
 
@@ -201,20 +196,22 @@ function oldManAnimMortReverse(){
 
 function oldManRevive(){
         
-        let xeRandom = Math.floor(Math.random(1) * 2)
-        vieOldMan = 10;
-        fpsE = 0;
-        j = 0;
-        if(xeRandom == 0){
-            xe = -30
-        } else if (xeRandom == 1){
-            xe = 730
-        }
-
-        butWalkOldMan();
+    vieOldMan = 10;
+    //score += 10;
+    //document.getElementById('score').innerHTML = `Score : ${score}`
+    let xeRandom = Math.floor(Math.random(1) * 2)
+    fpsE = 0;
+    j = 0;
+    if(xeRandom == 0){
+        xe = -30
+    } else if (xeRandom == 1){
+        xe = 730
+    }
 }
 
 function butWalkOldMan(){
+
+    mortOldMan = false;
 
     if(vieOldMan > 0){
 
@@ -254,18 +251,18 @@ function butWalkOldMan(){
                     };
             },35);
         };
+
     } else if (vieOldMan <= 0){
 
     if(senceE == 0){ // droite
 
         setTimeout(function(){
 
-            requestAnimationFrame(oldManAnimMort)
+            requestAnimationFrame(oldManAnimMort);
             butWalkOldMan();
 
             if(j >= arrayOldManMort.length){
                 oldManRevive();
-                return;
             }
 
         },30)
@@ -276,15 +273,45 @@ function butWalkOldMan(){
 
         setTimeout(function(){
 
-            requestAnimationFrame(oldManAnimMortReverse)
+            requestAnimationFrame(oldManAnimMortReverse);
             butWalkOldMan();
 
             if(j >= arrayOldManMortReverse.length){
                 oldManRevive();
-                return;
             }
             
         },30)
     }
-  }
+  } 
+  
+   /* if (vieOldMan == 0){
+
+        setTimeout(function(){
+            score += 10;
+            document.getElementById('score').innerHTML = `Score : ${score}`;
+        },500)
+    } */
 };
+
+
+/*
+---------------------------------
+---------------------------------
+---------------------------------
+---------------------------------
+---------------------------------
+---------------------------------
+---------------------------------
+---------------------------------
+---------------------------------
+*/
+
+// class OldManEnnemi{
+//     constructor(xe, j, fpsE, senceE ){
+//         this.xe = xe;
+//         this.j = j;
+//         this.fpsE = fpsE;
+//         this.senceE = senceE;
+//     }
+
+// }
