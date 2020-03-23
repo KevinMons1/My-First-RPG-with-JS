@@ -44,3 +44,42 @@ canvas {
 .boite {
     padding: 0 20px;
 }
+
+#menu, #gameOver{
+    position: absolute;
+    width: 700px;
+    height: 200px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 15;
+    background-color: white;
+}
+
+#menubox, #gameOverbox {
+    text-align: center;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+button {
+    font-size: 35px;
+    text-transform: uppercase;
+    background-color: white;
+    border: none;
+}
+
+#menubox p {
+    font-size: 10px;
+}
+
+#gameOverbox p {
+    font-size: 35px;
+}
+
+#gameOver{
+    display: none;
+}
+

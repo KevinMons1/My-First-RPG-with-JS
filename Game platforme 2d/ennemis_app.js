@@ -42,18 +42,19 @@ calculeDuSenceE()
 let oldMan = new Image();
 oldMan.src = 'ennemis/Old_man.png'
 
-oldMan.onload = function(){
+function oldManApparition(){
+        
+        if(senceE == 0){
 
-    if(senceE == 0){
+            postureBaseOldMan();
+            butWalkOldMan();
+    
+        } else if(senceE == 1){
+            postureBaseOldManReverse();
+            butWalkOldMan();
+        };
 
-        postureBaseOldMan();
-        butWalkOldMan();
-
-    } else if(senceE == 1){
-        postureBaseOldManReverse();
-        butWalkOldMan();
-    }
-}
+};
 
 let oldManReverse = new Image();
 oldManReverse.src = 'ennemis/Old_manReverse.png'

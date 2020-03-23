@@ -1,7 +1,18 @@
-/*
-    Les zombies vont chercher le pq qu'on doit proteger
-    si le zombie est proche du hero alors il attaque
-*/
+
+let playGame = document.getElementById('btnPlay');
+let game = false;
+
+playGame.addEventListener('click', function(){
+
+    game = true;
+    document.getElementById('menu').style.display = 'none';
+
+    musique();
+    heroApparition();
+    oldManApparition();
+    tempsSurvie();
+
+})
 
 // Canvas -------------------------------------------------------------
 
@@ -16,7 +27,6 @@ let ctx2 = canvas2.getContext('2d');
 
 canvas2.width = 700;
 canvas2.height = 200;
-
 
 // Variables Globaux ---------------------------------------------------
 
@@ -36,13 +46,14 @@ let yb = 100;
 let posture = true;
 let sence = 0; // 0 = droitre 1 = gauche
 let senceE = 0; // 0 = droite 1 = gauche
+let senceB = 0; // 0 = droite 1 = gauche
 let compteurForHurtHero = 0;
 let vieHero = 0;
 let arrayVieHero = ['❤️❤️❤️❤️❤️', '❤️❤️❤️❤️', '❤️❤️❤️', '❤️❤️', '❤️']
 let vieOldMan = 10;
-let vieOldWoman = 100
+let vieOldWoman = 50;
 //let score = 0;
-let survie = 25;
+let survie = 1;
 
 // function prédéfinie d'animation ------------------------------------
 
@@ -53,13 +64,48 @@ function drawFrame(img, frameX, frameY, canvasX, canvasY){
 
 };
 
+function gainVie(){
+
+    setTimeout(function(){
+        
+        if(vieHero >= 1){
+            let audioVie = new Audio('gainVie.mp3');
+            audioVie.play();
+            vieHero--;
+            perteVie();
+        }
+
+        gainVie();
+    },30000);
+
+};
+gainVie();
+
+function perteVie(){
+
+    document.getElementById('vie').innerHTML = arrayVieHero[vieHero]
+
+    if(vieHero == 5){
+        document.getElementById('gameOver').style.display = 'block';
+        document.getElementById('votreScore').innerHTML = `Vous avez tenu ${survie} secondes !`
+    };
+
+};
+
+function musique(){
+    let audio = new Audio('music.mp3');
+    audio.play();
+}
+
 // Posture de base ------------------------------------------------------
 
 let hero = new Image();
 hero.src = 'hero/GraveRobber.png'
 
-hero.onload = function(){
-    postureBase(); // remettre onload
+function heroApparition(){
+
+        postureBase();
+
 }
 
 function postureBase(){
@@ -144,6 +190,11 @@ function heroAnimAttack(){
             vieOldMan--
         }
 
+        // vie Boss
+        if(xh + 10 >= xb && senceB == 1){
+            vieOldWoman--
+        }
+
     } else if(sence == 1){
 
         drawFrame(heroAttackReverse,arrayHeroAttackReverse[i],0,xh,yh);
@@ -153,11 +204,17 @@ function heroAnimAttack(){
         } 
 
         // vie de l'enemie
-        if(xh - 20 <= xe && senceE == 0){
+        if(xh + 20 >= xe && senceE == 0){
             vieOldMan--
         }
+
+        // vie Boss
+        if(xh - 10 <= xb && senceB == 0){
+            vieOldWoman--
+        }
     }
-    console.log(vieOldMan)
+    console.log('Ennemis : ' + vieOldMan)
+    console.log('Boss : ' + vieOldWoman)
 }
 
 // Animation blesser -----------------------------------------------------
@@ -235,10 +292,6 @@ function toucheHeroAnimWalk(e){
     };
 };
 
-function perteVie(){
-    document.getElementById('vie').innerHTML = arrayVieHero[vieHero]
-}
-
 // Bloquage des murs --------------------------------------------------
 
 function bloqueMur(){
@@ -264,11 +317,13 @@ function tempsSurvie(){
         tempsSurvie();
     },1000)
 
-    if(survie == 30 || survie == 60 || survie == 90 || survie == 120|| survie == 150){
-        apparitionOldWoman();
+    if(survie == 30 || survie == 150 || survie == 300 || survie == 500|| survie == 750){
+        butWalkOldWoman()
+        ctx3.clearRect(xb,yb,96,96)
         ctx2.clearRect(xe,yh,48,48)
-        xe = -500;
+        xe = -800;
+        xb = 640;
+        vieOldWoman = 50;
     };
 
 }
-tempsSurvie();

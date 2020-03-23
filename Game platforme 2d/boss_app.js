@@ -7,7 +7,6 @@ canvas3.height = 200;
 // Variable -----------------------------------------------------------
 
 let k = 0;
-let senceB = 0; // 0 = droite 1 = gauche
 let fpsB = 0;
 
 // function prédéfinie d'animation ------------------------------------
@@ -182,7 +181,7 @@ function oldWomanAnimMortReverse(){
     };
     fpsB = 0;
     ctx3.clearRect(xb,yb,97, 97);
-    drawFrameB(oldWomanMortReverse,arrayOldWomanMortReverse[K],0,xb,yb);
+    drawFrameB(oldWomanMortReverse,arrayOldWomanMortReverse[k],0,xb,yb);
     k++;
     if(k >= arrayOldWomanMortReverse.length){
         ctx3.clearRect(xb,yb,97, 97);
